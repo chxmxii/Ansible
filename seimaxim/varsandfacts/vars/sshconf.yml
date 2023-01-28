@@ -1,0 +1,8 @@
+---
+ssh_confing:
+  - startline: "^#Banner"
+    change: "Banner /etc/motd"
+  - startline: "^X11For"
+    change: "X11Forwarding no"
+  - startline: "^#MaxAuth"
+    change: "MaxAuthTries 3"

@@ -1,0 +1,16 @@
+---
+- hosts: node5
+  tasks:
+    - block:
+        - debug:
+            msg: I want to run the block
+        - fail:
+            msg: I ask you to fail cause i want to see the conditions
+          when: "'a' == 'a'"
+ 
+      rescue:
+        - debug:
+            msg: oh nice, i got rescued
+      when: "'b' == 'a'"
+    - debug:
+        msg: it didn't work

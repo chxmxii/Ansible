@@ -1,0 +1,25 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+  
+    - yum: 
+        name: firewalld,httpd
+        state: latest
+    
+    - firewalld:
+        service: http
+        state: enabled
+        immediate: yes
+        permanent: yes
+    - firewalld:
+        port: 80/tcp
+        state: enabled
+        immediate: yes
+        permanent: yes
+    
+    - copy:
+        content: "Server name is: {{ ansible_hostname }}."
+        dest: /var/www/html/index.html
+      notify: restart_web
+   

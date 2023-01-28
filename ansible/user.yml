@@ -1,0 +1,24 @@
+---
+- hosts: dev,proxy
+  vars_files:
+    - vars/users_list.yml
+    - lock.yml
+  tasks:
+    - group:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - devops
+        - managers
+    - user: 
+        name: "{{ item.username }}"
+        group: devops
+        password: "{{ pw_dev | password_hash('sha512') }}"
+      when: "item.job == 'developer' and inventory_hostname in groups['dev']"
+      loop: "{{ users }}"
+    - user:
+        name: "{{ item.username }}"
+        group: managers
+        password: "{{ pw_mgr | password_hash('sha512') }}"
+      when: "item.job == 'manager' and inventory_hostname in groups['proxy']"
+      loop: "{{ users }}"

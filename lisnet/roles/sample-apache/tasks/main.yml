@@ -1,0 +1,21 @@
+---
+- yum: 
+    name:
+      - httpd
+      - mod_ssl
+      - php
+    state: installed
+
+- firewalld:
+    service: "{{ item }}"
+    state: enabled
+    immediate: yes
+    permanent: yes
+  loop:
+    - http
+    - https
+- template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  notify: restart_httpd
+

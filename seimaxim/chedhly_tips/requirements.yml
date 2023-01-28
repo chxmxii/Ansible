@@ -1,0 +1,5 @@
+---
+- name: phpinfo
+  src: url
+- name: web
+  src: url

@@ -1,0 +1,13 @@
+---
+- hosts: all
+  vars_files:
+    - secret.yml
+    - vars/users-list.yml
+  tasks:
+    - user:
+        name: "{{ item.username }}"
+        password: "{{ user_pass | password_hash('sha512') }}"
+        uid: "{{ item.uid }}"
+        group: wheel
+        shell: /bin/bash
+      loop: "{{ users }}"

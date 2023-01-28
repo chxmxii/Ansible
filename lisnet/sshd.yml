@@ -1,0 +1,21 @@
+---
+- hosts: all
+  become: true
+  vars:
+    sshconf:
+      - start: "^Banner"
+        change: "Banner /etc/motd"
+      - start: "^X11For"
+        change: "X11Forwarding no"
+      - start: "^MaxAuthT"
+        change: "MaxAuthTries 3"
+  tasks:
+    - lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: "{{ item.start }}"
+        line: "{{ item.change }}"
+        validate: /usr/sbin/sshd -t -f %s
+      loop: "{{ sshconf }}"
+
+   

@@ -1,0 +1,7 @@
+users:
+  - name: mohamed
+    job: developer
+  - name: salah
+    job: tester
+  - name: saliha
+    job: manager

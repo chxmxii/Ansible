@@ -1,0 +1,23 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - user:
+        name: webdir
+        state: present
+
+    - file:
+        path: /webdir
+        state: directory
+        mode: 2755
+        owner: webdir
+        group: webdir
+
+    - file:
+        src: /var/www/html/index.html
+        dest: /webdir/index.html
+        state: link
+    
+    - copy:
+        content: "Holy Molyyy"
+        dest: /webdir/index.html

@@ -1,0 +1,53 @@
+---
+# tasks file for sample-mysql
+- parted:
+    device: /dev/sdb
+    number: 1
+    part_end: 800MiB
+    state: present
+- lvg:
+    vg: vg_database
+    pvs: /dev/sdb1
+- lvol:
+    vg: vg_database
+    size: 512
+    lv: lv_mysql
+- filesystem:
+    fstype: xfs
+    dev: /dev/mapper/vg_database-lv_mysql
+- mount:
+    src: /dev/mapper/vg_database-lv_mysql
+    path: /mnt/mysql_backups 
+    state: mounted
+    fstype: xfs
+- yum:
+    name: mysql-server, python3-PyMySQL
+    state: installed
+- firewalld:
+    service: mysql
+    state: enabled
+    permanent: yes
+    immediate: yes
+- service:
+    name: mysqld
+    state: started
+- copy:
+    content: |
+            [client]
+            user=root
+            password={{ database_password }}
+    dest: ~/.my.cnf
+
+- mysql_user:
+    name: root
+    password: "{{ database_password }}"
+- service:
+    name: mysqld
+    state: restarted
+    enabled: yes
+
+- template:
+    src: my.cnf.j2
+    dest: /etc/my.cnf.d/my.cnf
+ 
+

@@ -1,0 +1,11 @@
+---
+- hosts: all
+  become: true
+  vars:
+    timesync_ntp_servers:
+      - hostname: nl.pool.ntp.org
+        pool: yes
+        iburst: yes
+  roles:
+    - rhel-system-roles.timesync
+

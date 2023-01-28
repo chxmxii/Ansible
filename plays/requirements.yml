@@ -1,0 +1,7 @@
+---
+- name: docker
+  src: geerlingguy.docker
+- name: k8s
+  src: geerlingguy.kubernetes
+- name: rabbitmq
+  src: geerlingguy.rabbitmq

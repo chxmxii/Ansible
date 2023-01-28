@@ -1,0 +1,13 @@
+---
+reportvar:
+  - start: "^HOST"
+    change: "HOST= {{ ansible_hostname }}"
+  - start: "^MEMORY"
+    change: "MEMORY= {{ ansible_memtotal_mb }}"
+  - start: "^BIOS"
+    change: "BIOS= {{ ansible_bios_version }}"
+  - start: "^VDA"
+    change: "VDA_DISK_SIZE= {{ ansible_devices.sda.size | default('none') }}"
+  - start: "^VDB"
+    change: "VDB_DISK_SIZE= {{ ansible_devices.sdb.size | default('none') }}"
+

@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  tasks:
+  - debug:
+      var:  ansible_devices.sda.partitions.sda1.size #[:-2] | int *1024 

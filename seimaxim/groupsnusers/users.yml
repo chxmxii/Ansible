@@ -1,0 +1,69 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/user_list.yml
+  tasks:
+
+    - group: name=admin state=present
+    
+    - group: name=members state=present
+    
+    - user:
+        name: "{{ item.username }}"
+        uid: "{{ item.uid }}"
+        group: "{{ item.group }}"
+        append: yes
+        shell: /bin/bash
+        password: "{{ item.password | password_hash('sha512') }}"
+      loop: "{{ users }}"
+      when:
+        - ('webservers' in group_names)
+        - (item.uid|string|first == '1')
+    - user:
+        name: "{{ item.username }}"
+        uid: "{{ item.uid }}"
+        group: "{{ item.group }}"
+        append: yes
+        shell: /bin/bash
+        update_password: on_create
+        password: "{{ item.password | password_hash('sha512') }}"
+      loop: "{{ users }}"
+      when:
+        - ('database' in group_names)
+        - (item.uid|string|first == '2')
+    - file:
+        path: "/home/{{ item.username }}/.ssh/"
+        state: directory
+        owner: "{{ item.username }}"
+        group: "{{ item.group }}"
+      loop: "{{ users }}"
+      when:
+        - '"webserver" in group_names' 
+        - 'item.uid|string|first == "1"'
+    - file:                              
+        path: "/home/{{ item.username }}/.ssh/"
+        state: directory                 
+        owner: "{{ item.username }}"     
+        group: "{{ item.group }}"        
+      loop: "{{ users }}"
+      when:
+        - '"database" in group_names' 
+        - 'item.uid|string|first == "2"'
+    - authorized_key:
+        user: "{{ item.username }}"
+        state: present
+        key: "{{ lookup('file','/home/ansible/.ssh/id_rsa.pub') }}"
+      loop: "{{ users }}"
+      when:
+        - '"database" in group_names'
+        - 'item.uid|string|first == "2"'
+    - authorized_key:
+        user: "{{ item.username }}"
+        state: present
+        key: "{{ lookup('file','/home/ansible/.ssh/id_rsa.pub') }}"
+      loop: "{{ users }}"
+      when:
+        - '"webservers" in group_names'
+        - 'item.uid|string|first == "1"'
+

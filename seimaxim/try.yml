@@ -1,0 +1,12 @@
+---
+- hosts: node2
+  become: true
+  tasks:
+    - assert:
+        that:
+          - "ansible_os_family != 'RedHat'"
+      register: nice
+      ignore_errors: true
+    - debug:
+        var: nice
+      when: nice.failed.stdout == 1

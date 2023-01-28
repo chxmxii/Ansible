@@ -1,0 +1,15 @@
+---
+- hosts: prod
+  tasks:
+    - file:
+        path: /etc/ansible/facts.d
+        state: directory
+        recurse: yes
+
+    - copy:
+        content: |
+                [sample_exam]
+                server_role=apache
+        dest: /etc/ansible/facts.d/custom.fact
+    - debug:
+        var: ansible_local.custom.sample_exam

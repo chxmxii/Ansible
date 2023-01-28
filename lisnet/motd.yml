@@ -1,0 +1,16 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - copy:
+        content: "Welcome To HAProxy server"
+        dest: /etc/motd
+      when: "'proxy' in group_names"
+    - copy:
+        content: "Welcome To MySQL server"
+        dest: /etc/motd
+      when: "'database' in group_names"
+    - copy:
+        content: "Welcome To Apache server"
+        dest: /etc/motd
+      when: "'webservers' in group_names"

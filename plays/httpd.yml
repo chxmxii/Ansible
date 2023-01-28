@@ -1,0 +1,6 @@
+---
+- hosts: test
+  vars:
+    sysadmin: "my@email"
+  roles:
+    - httpd-role

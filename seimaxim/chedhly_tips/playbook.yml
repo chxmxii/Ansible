@@ -1,0 +1,49 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - block:
+        - parted:
+            device: /dev/sda
+            number: 1
+            part_start: 0%
+            part_end: 100%
+            state: present
+        - lvg:
+            vg: research
+            pvs: /dev/sda1
+        - lvol:
+            lv: lv-re
+            vg: research
+            size: 1500  
+        - fail:
+            msg: Volume group does not exist
+          when: research not in ansible_facts['devices']['sda'] 
+      when: 
+        - ansible_facts['devices']['sda']
+        - ansible_facts['devices']['sda'][:-2] | int *1024 > 1500
+      rescue:
+        - fail:
+            msg: Volume group does not exist
+          when: research not in ansible_facts['devices']['sda']
+        - debug:
+            msg: Not enough disk space
+          when: ansible_facts['devices']['sda'][:-2] | int *1024 < 1500 
+        - lvol:
+            lv: lv-re
+            vg: research
+            size: 800
+          when: ansible_facts['devices']['sda'][:-2] | int *1024 < 1500
+
+           
+
+
+#Ken mafamech vg group esmou research, output fail message fih “Volume group does not exist” 
+#Ken disk space akal men 1500mb, output “Not enough disk space” then create logical volume of size 800mb
+#Sinon asnaa logical volume 1500mb ala rahtek ken possible
+#
+#- 5 nodes:
+#2 nodes has 2gb, 2 nodes has 1000mb, 1 node has none, make for the 4 nodes who has vg group with name "reasearch" contains all avaible space, make 1500mb lvol.
+#if vg group doesn't exit, a fail message prompt "volume group does not exist".
+#if disk space is < 1500, a message "not enough disk space" will show up and create a lvol with size of 800
+#otherwise, make a logical volume 1500 if possible

@@ -1,0 +1,45 @@
+---
+- hosts: dev
+  tasks:
+    - user:
+        name: webdev
+  
+    - file:
+        path: /webdev
+        state: directory
+        mode: '2765'
+        owner: webdev
+
+    - file:
+        dest: /var/www/html/index.html
+        src: /webdev
+        state: link
+    - copy: content="development" dest=/webdev/index.html
+    - yum:
+        name: libselinux, policycoreutils
+        state: installed
+    - service: name=httpd state=started enabled=yes 
+    - name: Allow apache to modify files in /srv/git_repos
+      sefcontext:
+        target: '/webdev(/.*)?'
+        setype: httpd_sys_content_t
+        state: present
+    - firewalld:
+        service: http
+        state: enabled
+        immediate: yes
+        permanent: yes
+    - name: Apply new SELinux file context to filesystem
+      command: restorecon -Rv /webdev/
+  
+    - copy:
+        content: "Development"
+        dest: /webdev/index.html
+      notify: restartweb
+  
+  handlers:
+    - name: restartweb
+      service:
+        name: httpd
+        state: restarted
+        enabled: yes

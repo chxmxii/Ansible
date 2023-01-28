@@ -1,0 +1,31 @@
+---
+- hosts: all
+  gather_facts: no
+  become: true
+  vars_files:
+    - secret.yml
+    - vars/user_list.yml
+  tasks:
+    - user:
+        name: "{{ item.username }}"
+        uid: "{{ item.uid }}"
+        password: "{{ user_password | password_hash('sha512') }}"
+        shell: /bin/bash
+        group: wheel
+        append: yes
+        update_password: on_create
+      loop: "{{ users }}"
+      when: (item.username|string|length < 6 and 'webservers' in group_names) or (item.username|string|length > 6 and 'database' in group_names)
+    - file:
+        path: "/home/{{ item.username }}/.ssh/"
+        state: directory
+        recurse: yes
+      loop: "{{ users }}"
+      when: "'webservers' in group_names or 'database' in group_names"
+    - authorized_key:
+        user: "{{ item.username }}"
+        key: "{{ lookup('file','/home/automated/.ssh/id_rsa.pub') }}"
+        state: present
+      loop: "{{ users }}" 
+      when: "'webservers' in group_names or 'database' in group_names"
+

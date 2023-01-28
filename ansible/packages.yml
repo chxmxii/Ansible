@@ -1,0 +1,17 @@
+---
+- hosts: dev,prod,webservers
+  tasks:
+    
+    - yum:
+        name: httpd, mod_ssl, mariadb
+        state: installed
+    
+    - yum:              
+        name: "@Development tools"
+        state: latest 
+      when: "'dev' in group_names"
+
+    - yum: 
+        name: "*"
+        state: latest
+      when: "'dev' in group_names"

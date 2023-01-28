@@ -1,0 +1,13 @@
+---
+- hosts: test
+  tasks:
+
+    - file:
+        path: /backup
+        state: directory
+
+    - archive:
+        path: /var/log
+        dest: /backup/logs.tar.gz
+        format: gz
+        

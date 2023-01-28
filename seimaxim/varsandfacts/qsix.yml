@@ -1,0 +1,8 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - template:
+        src: detail.j2
+        dest: /root/details.txt
+

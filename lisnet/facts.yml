@@ -1,0 +1,11 @@
+---
+- hosts: database
+  become: yes
+  tasks:
+    - copy:
+        content: |
+                [sample_examp]
+                server_role=mysql
+        dest: /etc/ansible/facts.d/custom.fact
+    - debug:
+        var: ansible_local.custom.sample_exam 

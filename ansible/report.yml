@@ -1,0 +1,15 @@
+---
+- hosts: all
+  vars_files:
+    - vars/reporvars.yml
+  tasks:
+    - copy:
+        src: report.txt
+        dest: /root/report.txt
+
+    - lineinfile:
+        path: /root/report.txt
+        regexp: "{{ item.start }}"
+        line: "{{ item.change }}"
+      loop: "{{ reportvar }}"
+      

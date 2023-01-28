@@ -1,0 +1,88 @@
+ANSIBLE-DOC(1)                                 System administration commands                                ANSIBLE-DOC(1)
+
+[1mNAME[0m
+       ansible-doc - plugin documentation tool
+
+[1mSYNOPSIS[0m
+       [1musage: ansible-doc [-h] [--version] [-v] [-M MODULE_PATH][0m
+              [--playbook-dir    BASEDIR]    [-t    {become,cache,callback,cliconf,connection,httpapi,inventory,lookup,net‐
+              conf,shell,module,strategy,vars}] [-j] [-F | -l | -s | --metadata-dump] [plugin [plugin ...]]
+
+[1mDESCRIPTION[0m
+       displays information on modules installed in Ansible libraries.  It displays a terse listing of  plugins  and  their
+       short  descriptions,  provides  a printout of their DOCUMENTATION strings, and it can create a short "snippet" which
+       can be pasted into a playbook.
+
+[1mCOMMON OPTIONS[0m
+          Plugin
+
+       [1m--metadata-dump[0m
+          [1mFor internal testing only [22mDump json metadata for all plugins.
+
+       [1m--playbook-dir [22m'BASEDIR'
+          Since this tool does not use playbooks, use this as a substitute playbook directory.This sets the  relative  path
+          for many features including roles/ group_vars/ etc.
+
+       [1m--version[0m
+          show  program's  version number, config file location, configured module search path, module location, executable
+          location and exit
+
+       [1m-F[22m, [1m--list_files[0m
+          Show plugin names and their source files without summaries (implies --list)
+
+       [1m-M[22m, [1m--module-path[0m
+          prepend colon-separated path(s) to  module  library  (default=~/.ansible/plugins/modules:/usr/share/ansible/plug‐
+          ins/modules)
+
+       [1m-h[22m, [1m--help[0m
+          show this help message and exit
+
+       [1m-j[22m, [1m--json[0m
+          Change output into json format.
+
+       [1m-l[22m, [1m--list[0m
+          List available plugins
+
+       [1m-s[22m, [1m--snippet[0m
+          Show playbook snippet for specified plugin(s)
+
+       [1m-t [22m'TYPE', [1m--type [22m'TYPE'
+          Choose  which  plugin  type  (defaults to "module"). Available plugin types are : ('become', 'cache', 'callback',
+          'cliconf', 'connection', 'httpapi', 'inventory', 'lookup', 'netconf', 'shell', 'module', 'strategy', 'vars')
+
+       [1m-v[22m, [1m--verbose[0m
+          verbose mode (-vvv for more, -vvvv to enable connection debugging)
+
+[1mENVIRONMENT[0m
+       The following environment variables may be specified.
+
+       ANSIBLE_CONFIG -- Specify override location for the ansible config file
+
+       Many more are available for most options in ansible.cfg
+
+       For a full list check [4mhttps://docs.ansible.com/[24m. or use the [4mansible-config[24m command.
+
+[1mFILES[0m
+       /etc/ansible/ansible.cfg -- Config file, used if present
+
+       ~/.ansible.cfg -- User config file, overrides the default config if present
+
+       ./ansible.cfg -- Local config file (in current working directory) assumed to be 'project specific' and overrides the
+       rest if present.
+
+       As mentioned above, the ANSIBLE_CONFIG environment variable will override all others.
+
+[1mAUTHOR[0m
+       Ansible was originally written by Michael DeHaan.
+
+[1mCOPYRIGHT[0m
+       Copyright © 2018 Red Hat, Inc | Ansible.  Ansible is released under the terms of the GPLv3 license.
+
+[1mSEE ALSO[0m
+       [1mansible  [22m(1),  [1mansible-config  [22m(1), [1mansible-console [22m(1), [1mansible-galaxy [22m(1), [1mansible-inventory [22m(1), [1mansible-playbook[0m
+       (1), [1mansible-pull [22m(1), [1mansible-vault [22m(1)
+
+       Extensive documentation is available in the documentation site: <[4mhttps://docs.ansible.com[24m>.  IRC  and  mailing  list
+       info can be found in file CONTRIBUTING.md, available in: <[4mhttps://github.com/ansible/ansible[24m>
+
+Ansible 2.9.27                                                                                               ANSIBLE-DOC(1)

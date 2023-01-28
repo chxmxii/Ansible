@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - template:
+        src: server_list.j2
+        dest: /etc/server_list.txt
+        owner: automated
+        setype: net_conf_t
+        mode: 0600
+      when: "'database' in group_names"
+
+   

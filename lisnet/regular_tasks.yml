@@ -1,0 +1,9 @@
+---
+- hosts: proxy
+  become: true
+  tasks:
+    - cron:
+        user: root
+        job: "date >> /var/log/time.log"
+        special_time: hourly
+        name: "root crontab"

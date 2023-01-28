@@ -1,0 +1,26 @@
+---
+# tasks file for apache
+- name: install httpd, mod_ssl and php
+  yum:
+    name: httpd,mod_ssl,php
+    state: latest
+- name: start apache service
+  service:
+    name: httpd
+    state: started
+    enabled: yes
+- name: enable firewalld on http and https
+  firewalld:
+    service: "{{ item }}"
+    state: enabled
+    immediate: yes
+    permanent: yes
+  loop:
+    - http
+    - https
+
+- name: copy jinja2 template
+  template:
+    src: index.html.j2
+    dest: /var/www/html/index.html
+  notify: restart_httpd

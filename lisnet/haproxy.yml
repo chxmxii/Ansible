@@ -1,0 +1,23 @@
+---
+- hosts: proxy
+  become: true
+  roles:
+    - geerlingguy.haproxy
+  vars:
+    haproxy_backend_servers: 
+      - name: node1
+        address: 192.168.44.150:80
+      - name: node3
+        address: 192.168.44.151:80
+    haproxy_backend_mode: 'http'
+    haproxy_backend_balance_method: 'roundrobin'
+  tasks:
+    - firewalld:
+        service: http
+        state: enabled
+        immediate: yes
+        permanent: yes
+
+
+
+    

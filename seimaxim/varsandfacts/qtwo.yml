@@ -1,0 +1,6 @@
+- hosts: all
+  become: true
+  tasks:
+    - copy:
+        content: "Myserver: {{ ansible_hostname }}"
+        dest: /etc/motd

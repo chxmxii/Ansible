@@ -1,0 +1,5 @@
+---
+- hosts: "{{ target }}"
+  tasks:
+    - debug:
+        var: ansible_facts['lvm']['vgs']['vgfiles']['size_g'] | int

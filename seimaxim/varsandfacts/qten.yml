@@ -1,0 +1,13 @@
+---
+- hosts: webservers
+  become: true
+  tasks:
+    - file:
+        path: /etc/ansible/facts.d/sample_exam.fact
+        state: absent
+    - copy:
+        src: custom.fact
+        dest: /etc/ansible/facts.d/custom.fact
+    - setup:
+    - debug:
+        var: ansible_local.custom.sample_exam

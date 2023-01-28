@@ -1,0 +1,20 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - file:
+        path: /etc/motd
+        state:  absent
+    - copy:
+        content: "Welcome to webserver"
+        dest: /etc/motd
+      when: (inventory_hostname in groups['webservers'])
+    - copy:
+        content: "Welcome to proxyserver"
+        dest: /etc/motd
+      when: (inventory_hostname in groups['proxy'])
+    - copy:
+        content: "Welcome to database"
+        dest: /etc/motd
+      when: (inventory_hostname in groups['database'])
+

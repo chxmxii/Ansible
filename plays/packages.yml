@@ -1,0 +1,15 @@
+---
+- hosts: all
+  tasks:
+    - yum:
+        name:
+          - nmap
+          - wireshark
+        state: installed
+      when: "'dev' in group_names"
+    - yum:
+        name:
+          - tmux
+          - tcpdump
+        state: installed
+      when: "'test' in group_names"

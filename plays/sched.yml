@@ -1,0 +1,8 @@
+---
+- hosts: dev
+  tasks:
+    - cron:
+        name: "dev"
+        user: "root"
+        special_time: "hourly"
+        job: "echo 'One hour has passed!' >> /var/log/messages"

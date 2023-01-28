@@ -1,0 +1,27 @@
+---
+# tasks file for httpd-role
+- yum:
+    name: httpd
+    state: installed
+
+- service:
+    name: httpd
+    state: started
+    enabled: yes
+
+- firewalld:
+    service: http
+    zone: public
+    permanent: yes
+    state: enabled
+    immediate: yes
+
+- firewalld:
+    service: https
+    zone: public
+    permanent: yes
+    state: enabled
+    immediate: yes
+- template:
+    src: index.j2
+    dest: /var/www/html/index.html

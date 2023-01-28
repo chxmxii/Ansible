@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - stat:
+        path: /var/www/html/index.html
+      register: p
+    - debug:
+        msg: "file exists"
+      when: p.stat.exists == true 
+    - debug:
+        msg: "file does not exists"
+      when: p.stat.exists == false

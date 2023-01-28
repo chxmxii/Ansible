@@ -1,0 +1,44 @@
+---
+- hosts: "{{ target }}"
+  become: yes
+  tasks:
+    - yum:
+        name: php, httpd, postgresql
+        state: installed
+      when: ansible_distribution == "RedHat" and ansible_memtotal_mb > 152
+    - block:
+        - service:
+            name: "{{ item }}"
+            state: started
+            enabled: yes
+          loop:
+            - php
+            - httpd
+            - postgresql
+      rescue:
+        - debug:
+            msg: One of the services can't be started and enabled
+       
+    
+    - replace:
+        path: /etc/httpd/conf/httpd.conf
+        regexp: '^EnableSendfile'
+        replace: 'EnableSendfile off'
+        backup: yes
+      notify: restarthttpd
+    - firewalld:
+        service: "{{ item }}"
+        state: enabled
+        immediate: yes
+        permanent: yes
+      loop:
+        - http
+        - https
+
+  handlers:
+    - name: restarthttpd
+      service:
+        state: restarted
+        enabled: yes
+        name: httpd
+

@@ -1,0 +1,7 @@
+HOSTNAME: {{ ansible_hostname }}
+MEMORY_TOTAL: {{ ansible_memtotal_mb }}
+MEMORY_FREE: {{ ansible_memfree_mb }}
+IPV4: {{ ansible_all_ipv4_addresses[0] }}
+FQDN: {{ ansible_fqdn }}
+SDA_DISK_SIZE: {{ ansible_devices.sda.size }}
+SDC_DISK_SIZE: {{ ansible_devices.sdc.size | default('none') }}

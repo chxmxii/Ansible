@@ -1,0 +1,22 @@
+---
+- hosts: all
+  tasks:
+    - lvol:
+        lv: lv0
+        vg: vg0
+        size: 12GiB   
+      when: ansible_facts.lvm.vgs | int > 12
+    - debug:
+        msg: Not enough space for logical volume
+      when: ansible_facts.lvm.vgs | int < 12
+    - lvol:                                 
+        lv: lv0                             
+        vg: vg0                             
+        size: 6GiB                         
+      when: "'vg0' in ansible_facts.lvm"
+    - debug:
+        msg: Volume group doesn't exist
+      when: "'vg0' not in ansible_facts.lvm"
+    - filesystem:
+        fstype: xfs
+        dev: /dev/mapper/vg0-lv0

@@ -1,0 +1,18 @@
+---
+- hosts: all
+  tasks:
+    - copy:
+        content: "{{ message }}"
+        dest: /etc/motd
+    #- copy:
+     #   content: "This is a dev server"
+      #  dest: /etc/motd
+      #when: "'dev' in group_names"
+    #- copy:                     
+     #   content: "This is a test server"
+      #  dest: /etc/motd         
+      #when: "'test' in group_names"
+   # - copy:                     
+    #    content: "This is a prod server"
+     #   dest: /etc/motd         
+      #when: "'prod' in group_names"

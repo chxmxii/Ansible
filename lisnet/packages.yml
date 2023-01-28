@@ -1,0 +1,17 @@
+---
+- hosts: all
+  become: true
+  tasks:
+    - yum:
+        name:
+          - tcpdump
+          - mailx
+        state: installed
+      when: "'proxy' in group_names"
+
+    - yum:
+        name:
+          - lsof
+          - mailx
+        state: installed
+      when: "'database' in group_names"

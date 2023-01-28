@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+  vars_files:
+    - vars/sshconf.yml
+  tasks:
+    - lineinfile:
+        path: /etc/ssh/sshd_config
+        state: present
+        regexp: "{{ item.startline }}"
+        line: "{{ item.change }}"
+        validate: /usr/sbin/sshd -t -f %s
+      loop: "{{ ssh_confing }}"
